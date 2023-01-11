@@ -1,0 +1,91 @@
+---
+title: "A1_Lee_20180554"
+author: "Gloria Lee"
+date: "2023-01-11"
+output: html_document
+---
+
+Link to Github: https://github.com/lib999ggg/BIOL432_Assignment1
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# loading libraries
+library(dplyr)
+library(ggplot2)
+source("http://bit.ly/theme_pub")
+
+```
+
+# Question 1
+```{r}
+
+# loading revised measurements
+InData = read.csv("./measurements.csv")
+
+# run R scripts
+source("dataGenerato.R") # creates the measurement data frame with features such as species names, limb width, limb length and observer 
+source("volumeGenerato.R") # adds an extra feature to the measurement data frame that calculates the volume of the limb
+
+```
+
+# Question 2
+```{r}
+
+# sorting data by different variables
+SpeciesData = InData %>% 
+  arrange(Species)
+ObserverData = InData %>% 
+  arrange(Observer)
+VolumeData = InData %>% 
+  arrange(Volume)
+
+```
+
+# Question 3
+```{r}
+
+# creates a table showing average volume of each species
+NewData = SpeciesData %>% 
+  group_by(Species) %>% 
+  summarise(mean(Volume))
+
+```
+
+# Question 4
+```{r}
+
+# creates a table showing the number of observations for each combination of species and observer
+SpeciesObserverCount = count(SpeciesData, Species, Observer)
+
+```
+
+# Question 5
+```{r}
+
+# creates a box plot comparing volumes for each species
+ggplot(data = SpeciesData, aes(x = Species, y = Volume))+
+  geom_boxplot()+
+  theme_pub()
+
+```
+
+# Question 6
+```{r}
+
+# creates a multi-panel plot showing the distribution of limb volume for each species
+ggplot(InData, aes(x = Volume, fill = Species)) +
+  geom_histogram() + 
+  facet_wrap(vars(Species)) + 
+  theme_pub() +
+  xlab("Limb Volume") +
+  ylab("Count")
+
+```
+
+
+
+
+
