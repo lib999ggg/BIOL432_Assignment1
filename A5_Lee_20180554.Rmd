@@ -1,0 +1,47 @@
+---
+title: "Regex"
+author: "Gloria Lee"
+date: "2023-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+# 1 - Importing File
+```{r}
+
+setwd("C:/Users/glori/Documents/BIOL432_Assignment1")
+MData = read.csv("measurements.csv")
+
+```
+
+# 2 - Creating Sp column
+```{r}
+
+MData = MData %>% 
+  mutate(Sp = sub("(\\w)\\w+", "\\1.", MData$Species))
+  
+```
+
+# 3 - Moving Sp Column & Removing Species Column
+```{r}
+
+NewData = MData %>% 
+  select(-c("Species")) %>% 
+  relocate(Sp, .before = "Limb_Width")
+  
+```
+
+# 4 - Creating new dataset
+```{r}
+
+write.csv(NewData, "MeasShort.csv")
+
+```
+
+
+
+
